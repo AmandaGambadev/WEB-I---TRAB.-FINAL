@@ -12,17 +12,17 @@ $page_title = "Quadro de Pontos";  // título da página
 $page_title .= ($scope === 'general') ? " Geral" : " da Liga";
 $page_title .= ($period === 'weekly') ? " - Semanal" : " - Total";
 
-$sql = "SELECT u.id_usuario, SUM(g.pontos) as total_score FROM partida g JOIN id_usuario u ON g.id_usuario = u.id_usuario";  // query SQL
+$sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM table_matches g JOIN table_users u ON g.id_usuario = u.id_usuario";  // query SQL
 $params = [];
 
 if ($scope === 'id_liga') {
   if(!$league_id) {
     die("Erro! O ID da Liga não foi informado.");
   }
-  $sql .= "JOIN liga_membros lm ON u.id_usuario = lm.id_usuario_liga WHERE lm.id_usuario_liga = ?";
+  $sql .= " JOIN table_league_members lm ON u.id_usuario = lm.id_usuario WHERE lm.id_liga = ?";
   $params[] = $league_id;
 
-  $stmt_league_name = $pdo->prepare("SELECT nome FROM liga WHERE id_liga = ?");  // att do título de acordo com o nome da liga correspondente
+  $stmt_league_name = $pdo->prepare("SELECT nome FROM table_leagues WHERE id_liga = ?");  // att do título de acordo com o nome da liga correspondente
   $stmt_league_name->execute([$league_id]);
   $league_name_result = $stmt_league_name->fetch();
   if ($league_name_result) {
@@ -42,7 +42,7 @@ $stmt->execute($params);
 $leaderboard_data = $stmt->fetchAll();
 
 // busca as ligas do usuário
-$stmt_my_leagues = $pdo->prepare("SELECT l.id_liga, l.nome FROM liga l JOIN liga_membros lm ON l.id_liga = lm.id_liga WHERE lm.id_usuario = ?");
+$stmt_my_leagues = $pdo->prepare("SELECT l.id_liga, l.nome FROM table_leagues l JOIN table_league_members lm ON l.id_liga = lm.id_liga WHERE lm.id_usuario = ?");
 $stmt_my_leagues->execute([$_SESSION['id_usuario']]);
 $my_leagues = $stmt_my_leagues->fetchAll();
 
