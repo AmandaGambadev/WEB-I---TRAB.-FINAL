@@ -17,7 +17,7 @@ if (mysqli_query($conn, $sql)) {
 
 mysqli_select_db($conn, $db_name);
 
-$table_users = 'usuario';  // tabela 'usuario' foi criada
+$table_users = 'table_users';  // tabela 'table_users' foi criada
 $sql = "CREATE TABLE $table_users (
   id_usuario INT AUTO_INCREMENT PRIMARY KEY,
   user_usuario VARCHAR(50) NOT NULL UNIQUE,
@@ -25,7 +25,7 @@ $sql = "CREATE TABLE $table_users (
   criado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) COMMENT='Dados dos usuários armazenados.';";
 
-$table_matches = 'partida';
+$table_matches = 'table_matches';
 $sql = "CREATE TABLE $table_matches (
   id_jogo INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL,
@@ -33,7 +33,7 @@ $sql = "CREATE TABLE $table_matches (
   palavras_minuto INT NOT NULL,
   ortografia DECIMAL(5, 2) NOT NULL,
   jogado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+  FOREIGN KEY (id_usuario) REFERENCES table_users(id_usuario) ON DELETE CASCADE
 )";
 
 $table_leagues = 'liga';
