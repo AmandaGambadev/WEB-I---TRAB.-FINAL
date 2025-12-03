@@ -17,4 +17,8 @@ if ($mysqli->connect_error) {
 
 $mysqli->set_charset("utf8mb4");
 
+// Criar conexão PDO para arquivos que usam PDO
+$pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 ?>
