@@ -12,10 +12,10 @@ $page_title = "Quadro de Pontos";  // título da página
 $page_title .= ($scope === 'general') ? " Geral" : " da Liga";
 $page_title .= ($period === 'weekly') ? " - Semanal" : " - Total";
 
-$sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM table_matches g JOIN table_users u ON g.id_usuario = u.id_usuario";  // query SQL
+$sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM table_matches g JOIN table_users u ON g.id_usuario = u.id_usuario";
 $params = [];
 
-if ($scope === 'id_liga') {
+if ($scope === 'league') {
   if(!$league_id) {
     die("Erro! O ID da Liga não foi informado.");
   }
@@ -31,8 +31,8 @@ if ($scope === 'id_liga') {
   }
 }
 
-if ($period === 'weekly') {  // add tempo
-  $sql .= ($scope === 'id_liga' ? " AND" : " WHERE") . " g.jogado >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+if ($period === 'weekly') {
+  $sql .= ($scope === 'league' ? " AND" : " WHERE") . " g.jogado >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
 }
 
 $sql .= " GROUP BY u.id_usuario, u.user_usuario ORDER BY total_score DESC LIMIT 20";
