@@ -17,21 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $league_keyword = trim($_POST['league_keyword']);
 
         if (!empty($league_name) && !empty($league_keyword)) {
+            try {
+                $stmt = $pdo->prepare("INSERT INTO table_leagues (nome, palavra_chave, id_criador_liga) VALUES (?, ?, ?)");
+                $stmt->execute([$league_name, $league_keyword, $id_usuario]);
+                $new_league_id = $pdo->lastInsertId();
 
-            // Insere nova liga
-            $stmt = $mysqli->prepare("INSERT INTO table_leagues (nome, palavra_chave, id_criador_liga) VALUES (?, ?, ?)");
-            $stmt->bind_param("ssi", $league_name, $league_keyword, $id_usuario);
-            $stmt->execute();
+                $stmt = $pdo->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
+                $stmt->execute([$id_usuario, $new_league_id]);
 
-            $new_league_id = $stmt->insert_id;
-
-            // Insere usuário como membro
-            $stmt = $mysqli->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
-            $stmt->bind_param("ii", $id_usuario, $new_league_id);
-            $stmt->execute();
-
-            $message = '<div class="alert alert-success">Liga "' . htmlspecialchars($league_name) . '" foi criada com sucesso.</div>';
-
+                $message = '<div class="alert alert-success">Liga "' . htmlspecialchars($league_name) . '" foi criada com sucesso.</div>';
+            } catch (PDOException $e) {
+                $message = '<div class="alert alert-danger">Erro ao criar liga.</div>';
+            }
         } else {
             $message = '<div class="alert alert-danger">Nome e palavra-chave são obrigatórios.</div>';
         }
@@ -41,35 +38,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ENTRAR EM UMA LIGA EXISTENTE
     ==================================*/
     if (isset($_POST['action']) && $_POST['action'] === 'join_league') {
-        
         $league_id = intval($_POST['league_id']);
         $keyword_attempt = trim($_POST['keyword_attempt']);
 
-        // Busca palavra-chave
-        $stmt = $mysqli->prepare("SELECT palavra_chave FROM table_leagues WHERE id_liga = ?");
-        $stmt->bind_param("i", $league_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $league = $result->fetch_assoc();
+        $stmt = $pdo->prepare("SELECT palavra_chave FROM table_leagues WHERE id_liga = ?");
+        $stmt->execute([$league_id]);
+        $league = $stmt->fetch();
 
         if ($league && $league['palavra_chave'] === $keyword_attempt) {
-
             try {
-                $stmt = $mysqli->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
-                $stmt->bind_param("ii", $id_usuario, $league_id);
-                $stmt->execute();
-
+                $stmt = $pdo->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
+                $stmt->execute([$id_usuario, $league_id]);
                 $message = '<div class="alert alert-success">Você entrou na liga!</div>';
-
-            } catch (Exception $e) {
-                
-                if ($mysqli->errno == 1062) { // Duplicate entry
+            } catch (PDOException $e) {
+                if ($e->getCode() == 23000) {
                     $message = '<div class="alert alert-warning">Você já faz parte dessa liga.</div>';
                 } else {
                     $message = '<div class="alert alert-danger">Erro ao entrar na liga.</div>';
                 }
             }
-
         } else {
             $message = '<div class="alert alert-danger">Palavra-chave incorreta ou a liga não existe.</div>';
         }
@@ -80,21 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    LIGAS EM QUE O USUÁRIO PARTICIPA
 ===================================*/
 
-$stmt = $mysqli->prepare("
+$stmt = $pdo->prepare("
     SELECT l.id_liga, l.nome, l.criada_em
     FROM table_leagues AS l
     JOIN table_league_members AS lm ON l.id_liga = lm.id_liga
     WHERE lm.id_usuario = ?
 ");
-$stmt->bind_param("i", $id_usuario);
-$stmt->execute();
-$my_leagues = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->execute([$id_usuario]);
+$my_leagues = $stmt->fetchAll();
 
-/* ================================
-   LISTA TODAS AS LIGAS EXISTENTES
-===================================*/
-
-$all_leagues = $mysqli->query("SELECT id_liga, nome FROM table_leagues")->fetch_all(MYSQLI_ASSOC);
+$stmt_all = $pdo->query("SELECT id_liga, nome FROM table_leagues");
+$all_leagues = $stmt_all->fetchAll();
 
 ?>
 
