@@ -8,7 +8,7 @@
   } else {
       if (!isset($_SESSION['id_usuario'])) {
           $login = false;
-          header("Location: /shelter-cats/jogo/index.php?error=login_falso");  // usuário não está logado
+          header("Location: /index.php?error=login_falso");  // usuário não está logado
           exit();
       }
   }

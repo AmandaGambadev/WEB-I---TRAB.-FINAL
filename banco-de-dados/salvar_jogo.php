@@ -16,7 +16,7 @@ if ($score <= 0 || $wpm < 0 || $accuracy < 0 || $accuracy > 100) {
 
 try {
   $stmt = $pdo->prepare(
-    "INSERT INTO table_matches (id_usuario, pontos, palavras_minuto, ortografia, jogado) VALUES (?, ?, ?, ?, NOW())"
+    "INSERT INTO jogo (id_usuario, pontos, palavras_minuto, ortografia, played_at) VALUES (?, ?, ?, ?, NOW())"
   );
   $stmt->execute([$id_usuario, $score, $wpm, $accuracy]);
 

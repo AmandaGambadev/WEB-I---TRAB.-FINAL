@@ -3,7 +3,9 @@
 Este documento registra todas as interações significativas com ferramentas de IA generativa (como Gemini, ChatGPT, Copilot, etc.) durante o desenvolvimento deste projeto. O objetivo é promover o uso ético e transparente da IA como ferramenta de apoio, e não como substituta para a compreensão dos conceitos fundamentais.
 
 ## Política de Uso
+
 O uso de IA foi permitido para as seguintes finalidades:
+
 - Geração de ideias e brainstorming de algoritmos.
 - Explicação de conceitos complexos.
 - Geração de código boilerplate (ex: estrutura de classes, leitura de arquivos).
@@ -25,6 +27,7 @@ O uso de IA foi permitido para as seguintes finalidades:
 - **Objetivo da Consulta:** Implementar queries para carregar dados reais no dashboard, corrigir inconsistências de nomes de tabelas, adicionar suporte PDO e diagnosticar erros HTTP 500 durante testes locais. Também fiz algumas consultas para lembrar a sintaxe do php, que não estou muito acostumado.
 
 - **Prompt(s) Utilizado(s):**
+
   1. "Implementei queries para carregar ranking e histórico em inicio.php, mas preciso de ajustes. Como deveria estruturar isso com PDO?"
   2. "Identifiquei SQL incorreto em pontos.php (JOIN id_usuario), corrigi para table_users, mas preciso verificar se há outros problemas similares"
   3. "Padronizei nomes de tabelas para table_users, table_matches, table_leagues. Quais arquivos preciso atualizar?"
@@ -56,6 +59,7 @@ O uso de IA foi permitido para as seguintes finalidades:
 - **Objetivo da Consulta:** Completar os usos do Ranking, identificando e corrigindo inconsistências no código de gerenciamento de ligas e padronização de nomes de tabelas.
 
 - **Prompt(s) Utilizado(s):**
+
   1. "Estou recebendo um parâmetro ?scope=league na URL, mas o código checa $scope === 'id_liga'. Qual é o problema?"
   2. "Procure lugares que estão usando o nome incorreto das tables de ranking"
   3. "O arquivo ligas.php está usando MySQLi prepare/bind_param, mas o resto do projeto usa PDO. Como converto?"
@@ -64,6 +68,7 @@ O uso de IA foi permitido para as seguintes finalidades:
   A IA explicou que o parâmetro vinha como 'league' na URL, mas o código testava 'id_liga', causando a falha no filtro de ligas. Confirmou que gerenciar_liga.php deveria usar 'table_leagues' e 'table_league_members' em todos os INSERTs, SELECTs e DELETEs para manter consistência. Mostrou como converter as operações create_league de MySQLi para PDO usando prepare(), execute([array]) e try-catch com PDOException.
 
 - **Análise e Aplicação:**
+
   1. Corrigi pontos.php alterando if ($scope === 'id_liga') para if ($scope === 'league') para receber corretamente o parâmetro da URL
   2. Atualizei gerenciar_liga.php substituindo todas as 6 referências de 'liga' e 'liga_membros' para 'table_leagues' e 'table_league_members' em INSERTs, SELECTs e DELETEs
   3. Converti ligas.php da sintaxe MySQLi para PDO em todas as operações (create_league, join_league, listagem) usando prepared statements com array de parâmetros

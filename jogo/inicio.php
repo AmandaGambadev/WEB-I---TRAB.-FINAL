@@ -31,8 +31,8 @@ $meu_historico = $stmt_hist->fetchAll();
 </head>
 <body>
   <div class="container mt-4">
-    <h1>Bem-vinde, Voluntárie <?php echo htmlspecialchars($_SESSION['user_usuario']); ?>!</h1>
-    <p>Os gatinhos do abrigo precisam de você. Está preparade?</p>
+    <h1>Bem-vindo, Voluntário <?php echo htmlspecialchars($_SESSION['user_usuario']); ?>!</h1>
+    <p>Os gatinhos do abrigo precisam de você. Está preparado?</p>
 
     <a href="jogo.php" class="btn btn-success btn-lg">Bora se voluntariar (Jogar)</a>
     <a href="ligas.php" class="btn btn-info">Ver Ligas</a>

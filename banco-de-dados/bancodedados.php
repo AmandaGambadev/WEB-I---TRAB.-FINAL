@@ -1,24 +1,23 @@
 <?php
+// Configurações de conexão
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "shelter_cats";
 
-$db_host = "localhost";
-$db_name = "shelter_cats";
-$db_user = "root";
-$db_password = "";
+// Conecta ao banco de dados
+// A função mysqli::__construct() tenta se conectar ao servidor e selecionar o banco de dados
+$conn = new mysqli($host, $user, $pass, $db);
 
-if (session_status() === PHP_SESSION_NONE) {  // inicia a sessão
-  session_start();
+// Verifica a conexão
+if ($conn->connect_error) {
+    // Se a conexão falhar, exibe uma mensagem de erro.
+    die("Erro ao conectar ao banco de dados: " . $conn->connect_error . ". Certifique-se de que o banco de dados '$db' foi criado e o MySQL está rodando.");
 }
 
-$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);  // conexão com mysqli
+// Define o charset para evitar problemas com acentuação
+$conn->set_charset("utf8mb4");
 
-if ($mysqli->connect_error) {
-  die("Erro! Não foi possível se conectar com o banco de dados: " . $mysqli->connect_error);
-}
-
-$mysqli->set_charset("utf8mb4");
-
-// Criar conexão PDO para arquivos que usam PDO
-$pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+// A variável $conn agora está pronta para ser usada em consultas SQL.
+// IMPORTANTE: A conexão NÃO É FECHADA AQUI. Ela deve ser fechada no script que a inclui (registro.php).
 ?>

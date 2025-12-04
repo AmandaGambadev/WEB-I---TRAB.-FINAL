@@ -14,7 +14,7 @@
 
       <div class="form-floating mb-2">
         <input type="text" class="form-control" id="id_usuario" name="user_usuario" placeholder="Seu nome aqui" required>
-        <label for="user_usuario">Nome de Voluntárie</label>
+        <label for="user_usuario">Nome de Voluntário</label>
       </div>
       <div class="form-floating mb-2">
         <input type="senha" class="form-control" id="senha" name="senha" placeholder="Sua senha" required>

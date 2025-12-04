@@ -1,74 +1,90 @@
 <?php
 
-require_once 'bancodedados.php';
+// Configurações de conexão
+$db_host = "localhost";
+$db_user = "root";
+$db_password = "";
+$db_name = "shelter_cats";
 
-$conn = mysqli_connect($db_host, $db_user, $db_password);  // inicia a conexão
+// Conectando já direto ao banco existente
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 
-if(!$conn) {  // checa se a conexão deu certo
-  die("A conexão falhou: " . mysqli_connect_error());
+// Verifica a conexão
+if ($mysqli->connect_error) {
+    // Se a conexão falhar, pode ser porque o banco de dados ainda não existe.
+    // O usuário deve executar 'criar_banco.php' primeiro.
+    die("Erro ao conectar: " . $mysqli->connect_error . ". Certifique-se de que o banco de dados '$db_name' foi criado (execute 'criar_banco.php' primeiro).");
 }
 
-$sql = "CREATE DATABASE $db_name";  // criação do banco de dados
-if (mysqli_query($conn, $sql)) {
-  echo "<br>O banco de dados foi criado com sucesso.<br>";
-} else {
-  echo "<br>Erro! Não foi possível criar o banco de dados: <br>" . mysqli_error($conn);
-}
+$mysqli->set_charset("utf8mb4");
 
-mysqli_select_db($conn, $db_name);
+// ---------- TABELAS ----------
 
-$table_users = 'table_users';  // tabela 'table_users' foi criada
-$sql = "CREATE TABLE $table_users (
+// Usuários
+$sql1 = "
+CREATE TABLE IF NOT EXISTS table_users (
   id_usuario INT AUTO_INCREMENT PRIMARY KEY,
   user_usuario VARCHAR(50) NOT NULL UNIQUE,
   senha VARCHAR(255) NOT NULL,
-  criado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) COMMENT='Dados dos usuários armazenados.';";
+  criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+";
 
-$table_matches = 'table_matches';
-$sql = "CREATE TABLE $table_matches (
+// Partidas
+$sql2 = "
+CREATE TABLE IF NOT EXISTS table_matches (
   id_jogo INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL,
-  pontos INT NOT NULL DEFAULT 0,
-  palavras_minuto INT NOT NULL,
-  ortografia DECIMAL(5, 2) NOT NULL,
-  jogado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id_usuario) REFERENCES table_users(id_usuario) ON DELETE CASCADE
-)";
+  pontos INT DEFAULT 0,
+  palavras_minuto INT DEFAULT 0,
+  ortografia DECIMAL(5,2) DEFAULT 0.00,
+  jogado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES table_users(id_usuario)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+";
 
-$table_leagues = 'liga';
-$sql = "CREATE TABLE $table_leagues (
+// Ligas
+$sql3 = "
+CREATE TABLE IF NOT EXISTS liga (
   id_liga INT AUTO_INCREMENT PRIMARY KEY,
-nome VARCHAR(50) NOT NULL,
-palavra_chave VARCHAR(30) NOT NULL,
-id_criador_liga INT NOT NULL,
-criada_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (id_criador_liga) REFERENCES usuario(id_usuario)
-) COMMENT='Os dados referentes às ligas foram salvos.';";
+  nome VARCHAR(50) NOT NULL,
+  palavra_chave VARCHAR(30) NOT NULL,
+  id_criador_liga INT NOT NULL,
+  criada_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_criador_liga) REFERENCES table_users(id_usuario)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
+";
 
-$table_league_members = 'liga_membros';
-$sql = "CREATE TABLE $table_league_members (
+// Membros liga
+$sql4 = "
+CREATE TABLE IF NOT EXISTS liga_membros (
   id_filiacao INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL,
   id_liga INT NOT NULL,
-  entrou_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-  FOREIGN KEY (id_liga) REFERENCES liga(id_liga) ON DELETE CASCADE,
-  UNIQUE KEY id_usuario_liga(id_usuario, id_liga)
-) COMMENT='Indica os usuários que criaram e estão nas ligas';";
+  entrou_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_usuario_liga (id_usuario, id_liga),
+  FOREIGN KEY (id_usuario) REFERENCES table_users(id_usuario)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_liga) REFERENCES liga(id_liga)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+";
 
-if (mysqli_query($conn, $sql)) {
-  echo "<br>A tabela foi criada com sucesso!<br>";
+// Executar
+$erros = 0;
+if ($mysqli->query($sql1) === FALSE) $erros++;
+if ($mysqli->query($sql2) === FALSE) $erros++;
+if ($mysqli->query($sql3) === FALSE) $erros++;
+if ($mysqli->query($sql4) === FALSE) $erros++;
+
+if ($erros === 0) {
+    echo "Todas as tabelas foram criadas com sucesso!";
 } else {
-  echo "<br>Erro! Não foi possível criar a tabela.<br> " . mysqli_error($conn);
+    echo "Erro ao criar tabelas. Verifique as permissões e a sintaxe SQL. Erros: " . $mysqli->error;
 }
 
-if (mysqli_query($conn, $sql_score)) {
-  echo "<br>A tabela foi criada com sucesso!<br>";
-} else {
-  echo "<br>Erro! Não foi possível criar a tabela.<br> " . mysqli_error($conn);
-}
-
-mysqli_close($conn);
+$mysqli->close();
 
 ?>
