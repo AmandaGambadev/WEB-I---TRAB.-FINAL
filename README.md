@@ -198,13 +198,4 @@ Todo código foi compreendido, validado e adaptado pelos desenvolvedores antes d
 - ✅ Dados de teste automáticos
 - ✅ Pronto para deployment
 
----
-
-## 📖 Documentação Adicional
-
-- `convenience/QUICK_START.md` - Guia de inicialização rápida
-- `convenience/convenience_init.php` - Script de inicialização automática
-- `AI_USAGE_LOG.md` - Log detalhado de uso de IA
-- `MERGE_RESOLUTION.md` - Resolução de conflitos de merge
-- `SETUP_GUIDE.md` - Guia completo de configuração
 
