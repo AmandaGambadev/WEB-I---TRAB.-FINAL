@@ -1,12 +1,12 @@
 <?php
 
-require_once 'shelter-cats/banco-de-dados/bancodedados.php';
-require_once 'shelter-cats/banco-de-dados/funcs.php';
+require_once '../banco-de-dados/bancodedados.php';
+require_once '../banco-de-dados/funcs.php';
 check_user_logged_in();
 
 $id_usuario = $_SESSION['id_usuario'];
 
-$stmt = $pdo->prepare("SELECT pontos, jogado FROM table_matches WHERE id_usuario = ? ORDER BY jogado DESC");
+$stmt = $pdo->prepare("SELECT pontos, jogado FROM partida WHERE id_usuario = ? ORDER BY jogado DESC");
 $stmt->execute([$id_usuario]);
 $matches = $stmt->fetchAll();
 

@@ -12,7 +12,7 @@ $page_title = "Quadro de Pontos";  // título da página
 $page_title .= ($scope === 'general') ? " Geral" : " da Liga";
 $page_title .= ($period === 'weekly') ? " - Semanal" : " - Total";
 
-$sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM table_matches g JOIN table_users u ON g.id_usuario = u.id_usuario";
+$sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM partida g JOIN table_users u ON g.id_usuario = u.id_usuario";
 $params = [];
 
 if ($scope === 'league') {

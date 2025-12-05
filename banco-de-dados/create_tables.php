@@ -25,9 +25,9 @@ $sql = "CREATE TABLE $table_users (
   criado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) COMMENT='Dados dos usuários armazenados.';";
 
-$table_matches = 'table_matches';
+$table_matches = 'partida';
 $sql = "CREATE TABLE $table_matches (
-  id_jogo INT AUTO_INCREMENT PRIMARY KEY,
+  id_partida INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL,
   pontos INT NOT NULL DEFAULT 0,
   palavras_minuto INT NOT NULL,

@@ -6,7 +6,7 @@
  // Buscar Top 5 Geral Semanal para o Dashboard
  $stmt_rank = $pdo->prepare("
     SELECT u.user_usuario, SUM(p.pontos) as total
-    FROM table_matches p
+    FROM partida p
     JOIN table_users u ON p.id_usuario = u.id_usuario
     WHERE p.jogado >= DATE_SUB(NOW(), INTERVAL 7 DAY)
     GROUP BY u.id_usuario
@@ -17,7 +17,7 @@ $stmt_rank->execute();
 $ranking_geral = $stmt_rank->fetchAll();
 
 // Buscar Histórico Recente do Usuário
-$stmt_hist = $pdo->prepare("SELECT pontos, jogado FROM table_matches WHERE id_usuario = ? ORDER BY jogado DESC LIMIT 5");
+$stmt_hist = $pdo->prepare("SELECT pontos, jogado FROM partida WHERE id_usuario = ? ORDER BY jogado DESC LIMIT 5");
 $stmt_hist->execute([$_SESSION['id_usuario']]);
 $meu_historico = $stmt_hist->fetchAll();
 ?>
