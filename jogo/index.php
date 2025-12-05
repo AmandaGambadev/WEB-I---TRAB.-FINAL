@@ -3,7 +3,7 @@
 require_once '../banco-de-dados/bancodedados.php';
 
 if (isset($_SESSION['id_usuario'])) {   // verifica se a sessão já está ativa
-  header('Location: /shelter-cats/jogo/inicio.php');
+  header('Location: /WEB-I---TRAB.-FINAL/jogo/inicio.php');
   exit();
 }
 
@@ -41,7 +41,7 @@ if (isset($_GET['status'])) {
 <body>
   <div class="auth-container card">
     <h1>Abrigo de gatinhos</h1>
-    <p>Bem-vinde de volta, voluntárie!</p>
+    <p>Bem-vindo de volta, voluntário!</p>
 
     <?php
     if (!empty($feedback_message)) {
@@ -51,7 +51,7 @@ if (isset($_GET['status'])) {
 
     <form action="../banco-de-dados/login.php" method="POST">
       <div class="form-group mb-3">
-        <label for="username" class="form-label">Nome de Voluntárie</label>
+        <label for="username" class="form-label">Nome do Voluntário</label>
         <input type="text" id="username" name="username" class="form-input" required>
       </div>
 
@@ -64,7 +64,7 @@ if (isset($_GET['status'])) {
     </form>
 
     <p class="mt-4">
-      Ainda não é um voluntárie?
+      Ainda não é um voluntário?
       <a href="registrar.php">Crie o seu perfil</a>
     </p>
   </div>

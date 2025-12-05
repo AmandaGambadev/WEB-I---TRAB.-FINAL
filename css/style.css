@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap");
 
 :root {
-  --fundo: #FFFBF5;
+  --fundo: #fffbf5;
   --primaria: #0f7ea0;
-  --secundaria: #F2C4CE;
-  --texto: #5D4037;
-  --sucesso: #C8E6C9;
-  --erro: #FFCDD2;
-  --branco: #FFFFFF;
+  --secundaria: #f2c4ce;
+  --texto: #5d4037;
+  --sucesso: #c8e6c9;
+  --erro: #ffcdd2;
+  --branco: #ffffff;
   --sombra: rgba(0, 0, 0, 0.08);
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   background-color: var(--fundo);
   color: var(--texto);
   margin: 0;
@@ -20,7 +20,10 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 900;
   color: var(--primaria);
 }
@@ -64,9 +67,9 @@ a:hover {
   padding: 12px;
   margin-bottom: 15px;
   border-radius: 10px;
-  border: 2px solid #E0E0E0;
+  border: 2px solid #e0e0e0;
   background-color: var(--fundo);
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 .form-input:focus {
@@ -99,7 +102,8 @@ a:hover {
   border-collapse: collapse;
 }
 
-.history-table th, .history-table td {
+.history-table th,
+.history-table td {
   padding: 15px;
   text-align: left;
   border-bottom: 2px solid var(--fundo);
@@ -174,22 +178,66 @@ a:hover {
   background-color: var(--sucesso);
 }
 
-.feedback-card.ganhou h1, .feedback-card.ganhou .score-highlight {
-  color: #388E3C;
+.feedback-card.ganhou h1,
+.feedback-card.ganhou .score-highlight {
+  color: #388e3c;
 }
 
 .feedback-card.perdeu {
   background-color: var(--erro);
 }
 
-.feedback-card.perdeu h1, .feedback-card.perdeu .score-highlight {
-  color: #D32F2F;
+.feedback-card.perdeu h1,
+.feedback-card.perdeu .score-highlight {
+  color: #d32f2f;
 }
 
 .feedback-card.bem-vinde {
   background-color: var(--primaria);
 }
 
-.feedback-card.bem-vinde h1, .feedback-card.bem-vinde .score-hightlight {
+.feedback-card.bem-vinde h1,
+.feedback-card.bem-vinde .score-hightlight {
   color: var(--branco);
+}
+
+.imagem-gato,
+.imagem-comida {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  display: none;
+}
+
+.imagem-gato.visible,
+.imagem-comida.visible {
+  display: block;
+  margin: 0 auto;
+}
+
+.imagem-gato {
+  display: none;
+  width: 270px;
+  height: auto;
+}
+
+.imagem-gato.visible {
+  display: block;
+}
+
+.word-bubble {
+  font-size: 1.4rem;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  margin: 10px 0;
+  min-height: 48px;
+}
+
+.incorrect-word {
+  color: #c82333;
+}
+
+.correct-word {
+  color: #198754;
 }

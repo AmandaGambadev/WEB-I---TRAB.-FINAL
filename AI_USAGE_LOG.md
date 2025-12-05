@@ -3,7 +3,9 @@
 Este documento registra todas as interações significativas com ferramentas de IA generativa (como Gemini, ChatGPT, Copilot, etc.) durante o desenvolvimento deste projeto. O objetivo é promover o uso ético e transparente da IA como ferramenta de apoio, e não como substituta para a compreensão dos conceitos fundamentais.
 
 ## Política de Uso
+
 O uso de IA foi permitido para as seguintes finalidades:
+
 - Geração de ideias e brainstorming de algoritmos.
 - Explicação de conceitos complexos.
 - Geração de código boilerplate (ex: estrutura de classes, leitura de arquivos).
@@ -25,6 +27,7 @@ O uso de IA foi permitido para as seguintes finalidades:
 - **Objetivo da Consulta:** Implementar queries para carregar dados reais no dashboard, corrigir inconsistências de nomes de tabelas, adicionar suporte PDO e diagnosticar erros HTTP 500 durante testes locais. Também fiz algumas consultas para lembrar a sintaxe do php, que não estou muito acostumado.
 
 - **Prompt(s) Utilizado(s):**
+
   1. "Implementei queries para carregar ranking e histórico em inicio.php, mas preciso de ajustes. Como deveria estruturar isso com PDO?"
   2. "Identifiquei SQL incorreto em pontos.php (JOIN id_usuario), corrigi para table_users, mas preciso verificar se há outros problemas similares"
   3. "Padronizei nomes de tabelas para table_users, table_matches, table_leagues. Quais arquivos preciso atualizar?"
@@ -56,6 +59,7 @@ O uso de IA foi permitido para as seguintes finalidades:
 - **Objetivo da Consulta:** Completar os usos do Ranking, identificando e corrigindo inconsistências no código de gerenciamento de ligas e padronização de nomes de tabelas.
 
 - **Prompt(s) Utilizado(s):**
+
   1. "Estou recebendo um parâmetro ?scope=league na URL, mas o código checa $scope === 'id_liga'. Qual é o problema?"
   2. "Procure lugares que estão usando o nome incorreto das tables de ranking"
   3. "O arquivo ligas.php está usando MySQLi prepare/bind_param, mas o resto do projeto usa PDO. Como converto?"
@@ -64,6 +68,7 @@ O uso de IA foi permitido para as seguintes finalidades:
   A IA explicou que o parâmetro vinha como 'league' na URL, mas o código testava 'id_liga', causando a falha no filtro de ligas. Confirmou que gerenciar_liga.php deveria usar 'table_leagues' e 'table_league_members' em todos os INSERTs, SELECTs e DELETEs para manter consistência. Mostrou como converter as operações create_league de MySQLi para PDO usando prepare(), execute([array]) e try-catch com PDOException.
 
 - **Análise e Aplicação:**
+
   1. Corrigi pontos.php alterando if ($scope === 'id_liga') para if ($scope === 'league') para receber corretamente o parâmetro da URL
   2. Atualizei gerenciar_liga.php substituindo todas as 6 referências de 'liga' e 'liga_membros' para 'table_leagues' e 'table_league_members' em INSERTs, SELECTs e DELETEs
   3. Converti ligas.php da sintaxe MySQLi para PDO em todas as operações (create_league, join_league, listagem) usando prepared statements com array de parâmetros
@@ -73,5 +78,32 @@ O uso de IA foi permitido para as seguintes finalidades:
   - `jogo/pontos.php` - Linhas 18, 31 (correção de scope parameter de 'id_liga' para 'league')
   - `banco-de-dados/gerenciar_liga.php` - Linhas 23, 28, 36, 68, 75, 82, 87 (padronização de nomes de tabelas)
   - `jogo/ligas.php` - Linhas 18-30, 32-56 (conversão de MySQLi para PDO com try-catch)
+
+---
+
+### Interação 3: Resolução de Conflitos de Merge e Correção de Paths
+
+- **Data:** 04/12/2025
+- **Etapa do Projeto:** Merge de branches e correção de estrutura
+- **Ferramenta de IA Utilizada:** GitHub Copilot (Claude Haiku 4.5)
+- **Objetivo da Consulta:** Analisar 5 conflitos de merge entre as branches `amanda-branch` e `helena`, determinar a melhor solução e explicar o impacto. Posteriormente, corrigir todos os paths do projeto que estavam referenciando `/shelter-cats/` para o repositório correto e melhorar navegação do sistema de ligas com validações.
+
+- **Prompt(s) Utilizado(s):**
+
+  1. "Essa branch tá com vários conflitos nos arquivos de PHP. Analise todos e o contexto completo do app, e recomende qual é melhor manter do conflito e como resolver ele"
+  2. "Atualize todos os paths do projeto que estão usando `/shelter-cats/` para o repositório correto `/WEB-I---TRAB.-FINAL/`"
+  3. "a tela de ligas já existe, porém não há nenhum botão que leve para ela na tela, como seria o tratamento dentro da lista de ligas para redirecionar corretamente?"
+- **Resumo da Resposta da IA:**
+  A IA analisou os 5 conflitos entre as branches (bancodedados.php, login.php, registro.php, create_tables.php, gerenciar_liga.php) e identificou que a diferença principal era `helena` usando PDO (mais moderno e seguro) e `amanda-branch` usando MySQLi. Recomendou manter a abordagem PDO da branch `helena` por ser mais flexível, segura e consistente com o resto do projeto. Após resolução dos conflitos, a IA localizou e corrigiu 7+ arquivos com paths incorretos referenciando `/shelter-cats/`, incluindo CSS, imagens, sons e endpoints AJAX.
+
+- **Análise e Aplicação:**
+  Adotei a recomendação de padronizar em PDO, resolvendo todos os 5 conflitos mantendo a sintaxe PDO com prepared statements. Identifiquei que os paths estavam apontando para um repositório inexistente (`/shelter-cats/`), causando falha no carregamento de assets e endpoints. Corrigi todos os paths e a IA forneceu sugestões para melhorar navegação com botão "Ver Ranking" e validação de duplicação de nomes de liga.
+
+- **Referência no Código:**
+  As correções implementadas conforme orientação da IA encontram-se em:
+  - `banco-de-dados/bancodedados.php`, `login.php`, `registro.php`, `create_tables.php`, `gerenciar_liga.php` - Padronização em PDO (merge conflict resolution)
+  - `jogo/jogo.php`, `jogo/index.php`, `inicio.php`, `historico.php`, `pontos.php`, `funcs.php` - Paths e requires corrigidos para o repositório correto
+    - `jogo/ligas.php` - Linhas 18-28 (validação duplicata) e 127-135 (botão "Ver Ranking")
+  - `jogo/pontos.php` - Linha 9 (correção parâmetro `league_id`) e 73 (placeholder melhorado)
 
 ---

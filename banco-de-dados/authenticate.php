@@ -1,5 +1,7 @@
 <?php
-  session_start();
+  if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
 
   if (isset($_SESSION['id_usuario']) && isset($_SESSION['id_liga'])) {
       $login = true;
@@ -8,7 +10,7 @@
   } else {
       if (!isset($_SESSION['id_usuario'])) {
           $login = false;
-          header("Location: /shelter-cats/jogo/index.php?error=login_falso");  // usuário não está logado
+          header("Location: /WEB-I---TRAB.-FINAL/jogo/index.php?error=login_falso");  // usuário não está logado
           exit();
       }
   }
