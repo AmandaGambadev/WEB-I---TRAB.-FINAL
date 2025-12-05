@@ -1,23 +1,35 @@
 <?php
-// Configurações de conexão
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "shelter_cats";
 
-// Conecta ao banco de dados
-// A função mysqli::__construct() tenta se conectar ao servidor e selecionar o banco de dados
-$conn = new mysqli($host, $user, $pass, $db);
-
-// Verifica a conexão
-if ($conn->connect_error) {
-    // Se a conexão falhar, exibe uma mensagem de erro.
-    die("Erro ao conectar ao banco de dados: " . $conn->connect_error . ". Certifique-se de que o banco de dados '$db' foi criado e o MySQL está rodando.");
+if (session_status() === PHP_SESSION_NONE) {  
+  session_start();
 }
 
-// Define o charset para evitar problemas com acentuação
-$conn->set_charset("utf8mb4");
+// Configurações de conexão
+$db_host = "localhost";
+$db_user = "root";
+$db_password = "";
+$db_name = "shelter_cats";
 
-// A variável $conn agora está pronta para ser usada em consultas SQL.
-// IMPORTANTE: A conexão NÃO É FECHADA AQUI. Ela deve ser fechada no script que a inclui (registro.php).
+try {
+  // Criação da conexão PDO
+  $pdo = new PDO("mysql:host=$db_host;charset=utf8mb4", $db_user, $db_password);
+  
+  // Em caso de erro SQL
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+  // Definição do retorno padrão
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+  
+  // Criação do BD (caso ainda não exista)
+  $sql_db = "CREATE DATABASE IF NOT EXISTS $db_name";
+  $pdo->exec($sql_db);
+  
+  // Conexão com o DB shelter_cats
+  $pdo->exec("USE $db_name");
+  
+} catch (Exception $ex) {
+  // Interrupção segura caso a conexão falhe 
+  die("Erro! Não foi possível se conectar com o banco de dados. Tente novamente mais tarde.");
+}
+
 ?>
