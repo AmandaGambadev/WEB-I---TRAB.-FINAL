@@ -38,7 +38,7 @@ try {
         ortografia DECIMAL(5, 2) NOT NULL,
         jogado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (id_usuario) REFERENCES table_users(id_usuario) ON DELETE CASCADE
-    );";
+    ) COMMENT='O histórico de partidas foi armazenado.';";
     $pdo->exec($sql_matches);
     echo "A tabela 'table_matches' foi criada com sucesso!<br>";
     
