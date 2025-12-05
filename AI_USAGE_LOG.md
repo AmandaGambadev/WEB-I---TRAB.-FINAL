@@ -103,7 +103,40 @@ O uso de IA foi permitido para as seguintes finalidades:
   As correções implementadas conforme orientação da IA encontram-se em:
   - `banco-de-dados/bancodedados.php`, `login.php`, `registro.php`, `create_tables.php`, `gerenciar_liga.php` - Padronização em PDO (merge conflict resolution)
   - `jogo/jogo.php`, `jogo/index.php`, `inicio.php`, `historico.php`, `pontos.php`, `funcs.php` - Paths e requires corrigidos para o repositório correto
-    - `jogo/ligas.php` - Linhas 18-28 (validação duplicata) e 127-135 (botão "Ver Ranking")
+  - `jogo/ligas.php` - Linhas 18-28 (validação duplicata) e 127-135 (botão "Ver Ranking")
   - `jogo/pontos.php` - Linha 9 (correção parâmetro `league_id`) e 73 (placeholder melhorado)
 
 ---
+
+### Interação 4: Correção de Bugs Críticos, Feedback de UX e Scripts de Inicialização
+
+- **Data:** 05/12/2025
+- **Etapa do Projeto:** Bug fixes críticos e documentação final
+- **Ferramenta de IA Utilizada:** GitHub Copilot (Claude Haiku 4.5)
+- **Objetivo da Consulta:** Identificar e resolver bugs críticos que impediam o funcionamento básico, melhorar feedback do usuário no registro e criar um script de inicialização com dados de teste.
+
+- **Prompt(s) Utilizado(s):**
+
+  1. "Analise todo o código, não altere nada"
+  2. "Resolva só os problemas críticos"
+  3. "Adicione feedback visual na página de registro para quando usuário já existe ou campos vazios"
+  4. "Crie um script PHP que inicializa banco com usuário de teste e uma liga com dados de partidas"
+  5. "Atualize o README com estrutura do projeto e guia de inicialização rápida"
+
+- **Resumo da Resposta da IA:**
+  A IA identificou bugs críticos em `authenticate.php` (verificava `$_SESSION['id_liga']` inexistente), `historico.php` (HTML malformado), `gerenciar_liga.php` (falta de validação de tipo) e `pontos.php` (lógica redundante). Forneceu `convenience_init.php` que cria BD, tabelas, usuário `professor/123456`, liga de teste e 4 partidas simuladas. Adicionou alertas Bootstrap em `registrar.php` para feedback de sucesso/erro.
+
+- **Análise e Aplicação:**
+  Implementei os 4 bugs críticos: removido check de `id_liga` em `authenticate.php`, corrigido HTML em `historico.php`, adicionado type casting em `gerenciar_liga.php` e simplificada validação em `pontos.php`. Criei `convenience_init.php` para permitir testes rápidos e atualizei `README.md` com documentação completa e dados de teste.
+
+- **Referência no Código:**
+  - `banco-de-dados/authenticate.php` - Linhas 6-13 (validação de sessão corrigida)
+  - `jogo/historico.php` - Linha 27 (HTML corrigido)
+  - `banco-de-dados/gerenciar_liga.php` - Linha 46 (type casting adicionado)
+  - `jogo/pontos.php` - Linhas 10, 20 (validação simplificada)
+  - `jogo/registrar.php` - Linhas 6-42 (feedback com alertas Bootstrap)
+  - `convenience_init.php` - Novo arquivo (inicialização com dados de teste)
+  - `README.md` - Completamente atualizado
+
+---
+
