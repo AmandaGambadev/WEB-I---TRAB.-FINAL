@@ -86,24 +86,24 @@ O uso de IA foi permitido para as seguintes finalidades:
 - **Data:** 04/12/2025
 - **Etapa do Projeto:** Merge de branches e correção de estrutura
 - **Ferramenta de IA Utilizada:** GitHub Copilot (Claude Haiku 4.5)
-- **Objetivo da Consulta:** Analisar 5 conflitos de merge entre as branches `amanda-branch` e `helena`, determinar a melhor solução e explicar o impacto. Posteriormente, corrigir todos os paths do projeto que estavam referenciando `/shelter-cats/` para o repositório correto.
+- **Objetivo da Consulta:** Analisar 5 conflitos de merge entre as branches `amanda-branch` e `helena`, determinar a melhor solução e explicar o impacto. Posteriormente, corrigir todos os paths do projeto que estavam referenciando `/shelter-cats/` para o repositório correto e melhorar navegação do sistema de ligas com validações.
 
 - **Prompt(s) Utilizado(s):**
 
   1. "Essa branch tá com vários conflitos nos arquivos de PHP. Analise todos e o contexto completo do app, e recomende qual é melhor manter do conflito e como resolver ele"
   2. "Atualize todos os paths do projeto que estão usando `/shelter-cats/` para o repositório correto `/WEB-I---TRAB.-FINAL/`"
-
+  3. "a tela de ligas já existe, porém não há nenhum botão que leve para ela na tela, como seria o tratamento dentro da lista de ligas para redirecionar corretamente?"
 - **Resumo da Resposta da IA:**
   A IA analisou os 5 conflitos entre as branches (bancodedados.php, login.php, registro.php, create_tables.php, gerenciar_liga.php) e identificou que a diferença principal era `helena` usando PDO (mais moderno e seguro) e `amanda-branch` usando MySQLi. Recomendou manter a abordagem PDO da branch `helena` por ser mais flexível, segura e consistente com o resto do projeto. Após resolução dos conflitos, a IA localizou e corrigiu 7+ arquivos com paths incorretos referenciando `/shelter-cats/`, incluindo CSS, imagens, sons e endpoints AJAX.
 
 - **Análise e Aplicação:**
-  Adotei a recomendação de padronizar em PDO, resolvendo todos os 5 conflitos mantendo a sintaxe PDO com prepared statements. Identifiquei que os paths estavam apontando para um repositório inexistente (`/shelter-cats/`), causando falha no carregamento de assets e endpoints. Corrigi todos os paths em: jogo.php (CSS e imagens), js/jogo.js (endpoint AJAX), index.php (redirect), inicio.php, historico.php, pontos.php e funcs.php.
+  Adotei a recomendação de padronizar em PDO, resolvendo todos os 5 conflitos mantendo a sintaxe PDO com prepared statements. Identifiquei que os paths estavam apontando para um repositório inexistente (`/shelter-cats/`), causando falha no carregamento de assets e endpoints. Corrigi todos os paths e a IA forneceu sugestões para melhorar navegação com botão "Ver Ranking" e validação de duplicação de nomes de liga.
 
 - **Referência no Código:**
   As correções implementadas conforme orientação da IA encontram-se em:
   - `banco-de-dados/bancodedados.php`, `login.php`, `registro.php`, `create_tables.php`, `gerenciar_liga.php` - Padronização em PDO (merge conflict resolution)
-  - `jogo/jogo.php` - Linhas 13-20 (paths de CSS e imagens corrigidos para `/WEB-I---TRAB.-FINAL/`)
-  - `js/jogo.js` - Linha 137 (endpoint AJAX corrigido para `/WEB-I---TRAB.-FINAL/banco-de-dados/salvar_jogo.php`)
-  - `jogo/index.php`, `inicio.php`, `historico.php`, `pontos.php`, `funcs.php` - Paths e requires corrigidos para o repositório correto
+  - `jogo/jogo.php`, `jogo/index.php`, `inicio.php`, `historico.php`, `pontos.php`, `funcs.php` - Paths e requires corrigidos para o repositório correto
+    - `jogo/ligas.php` - Linhas 18-28 (validação duplicata) e 127-135 (botão "Ver Ranking")
+  - `jogo/pontos.php` - Linha 9 (correção parâmetro `league_id`) e 73 (placeholder melhorado)
 
 ---
