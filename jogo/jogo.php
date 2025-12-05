@@ -11,7 +11,10 @@ require '../banco-de-dados/authenticate.php';
 </head>
 <body>
   <div class="container mt-4">
-    <h1>Jogo — Shelter Cats</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Jogo — Shelter Cats</h1>
+      <a href="inicio.php" class="btn btn-secondary">← Voltar ao Painel</a>
+    </div>
 
     <div class="mb-3">
       <button id="start-game-btn" class="btn btn-primary">Iniciar Jogo</button>
