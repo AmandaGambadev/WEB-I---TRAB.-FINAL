@@ -1,3 +1,27 @@
+<?php
+$feedback_message = '';
+$feedback_type = '';
+
+if (isset($_GET['error'])) {
+  if ($_GET['error'] === 'empty_fields') {
+    $feedback_message = 'Por favor, preencha todos os campos.';
+    $feedback_type = 'danger';
+  } elseif ($_GET['error'] === 'user_exists') {
+    $feedback_message = 'Este nome de voluntário já existe. Tente outro!';
+    $feedback_type = 'warning';
+  } elseif ($_GET['error'] === 'registration_failed') {
+    $feedback_message = 'Erro ao registrar. Tente novamente mais tarde.';
+    $feedback_type = 'danger';
+  }
+}
+
+if (isset($_GET['success'])) {
+  if ($_GET['success'] === 'registered') {
+    $feedback_message = 'Perfil criado com sucesso! Faça o login agora.';
+    $feedback_type = 'success';
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,6 +35,13 @@
     <form action="../banco-de-dados/registro.php" method="POST">
       <h1 class="h3 mb-3 fw-normal">Alimente um gatinho!</h1>
       <p>Crie uma conta para começar a alimentar os gatos que moram no abrigo.</p>
+
+      <?php if (!empty($feedback_message)): ?>
+        <div class="alert alert-<?php echo htmlspecialchars($feedback_type); ?> alert-dismissible fade show" role="alert">
+          <?php echo htmlspecialchars($feedback_message); ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif; ?>
 
       <div class="form-floating mb-2">
         <input type="text" class="form-control" id="id_usuario" name="user_usuario" placeholder="Seu nome aqui" required>
