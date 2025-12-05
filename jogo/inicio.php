@@ -27,7 +27,7 @@ $meu_historico = $stmt_hist->fetchAll();
   <meta charset="UTF-8">
   <title>Shelter Cats - Home</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/shelter-cats/css/style.css">
+  <link rel="stylesheet" href="/WEB-I---TRAB.-FINAL/css/style.css">
 </head>
 <body>
   <div class="container mt-4">

@@ -31,7 +31,7 @@ $(document).ready(function () {
   let currentWordIndex = -1;
   let score = 0;
   let timerInterval = null;
-  let timeLeft = 120;
+  let timeLeft = 12;
   let wordTimeout = null;
 
   // imagens dos gatos (usando seletores corretos)
@@ -136,7 +136,7 @@ $(document).ready(function () {
     if (timerInterval) clearInterval(timerInterval);
 
     score = 0;
-    timeLeft = 120;
+    timeLeft = 12;
     $("#score-display").text(score);
     $("#time-display").text(timeLeft);
     gameInput.prop("disabled", false).val("").focus();
@@ -169,7 +169,7 @@ $(document).ready(function () {
     const accuracy = 98.5;
 
     $.ajax({
-      url: "/shelter-cats/banco-de-dados/salvar_jogo.php",
+      url: "/WEB-I---TRAB.-FINAL/banco-de-dados/salvar_jogo.php",
       type: "POST",
       dataType: "json",
       data: {

@@ -3,7 +3,7 @@
 require_once '../banco-de-dados/bancodedados.php';
 
 if (isset($_SESSION['id_usuario'])) {   // verifica se a sessão já está ativa
-  header('Location: /shelter-cats/jogo/inicio.php');
+  header('Location: /WEB-I---TRAB.-FINAL/jogo/inicio.php');
   exit();
 }
 
