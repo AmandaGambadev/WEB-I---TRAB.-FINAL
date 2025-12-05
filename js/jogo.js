@@ -3,11 +3,11 @@ $(document).ready(function () {
   const words = [
     "gatite",
     "ronronar",
-    "pãozinho",
+    "paozinho",
     "patinhas",
     "felino",
     "miau",
-    "siamês",
+    "siames",
     "arranhador",
     "bolinho",
     "ragdoll",
@@ -26,9 +26,16 @@ $(document).ready(function () {
     "bigodes",
     "soninho",
     "fofo",
+    "peludo",
+    "unhas",
+    "orelha",
+    "cauda",
+    "gatinho",
+    "ninhada",
   ];
 
   let currentWordIndex = -1;
+  let lastWordIndex = -1;
   let score = 0;
   let timerInterval = null;
   let timeLeft = 90;
@@ -95,7 +102,12 @@ $(document).ready(function () {
   }
 
   function pickNextWordRandom() {
-    currentWordIndex = Math.floor(Math.random() * words.length);
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * words.length);
+    } while (newIndex === lastWordIndex && words.length > 1);
+    currentWordIndex = newIndex;
+    lastWordIndex = newIndex;
     return words[currentWordIndex];
   }
 
