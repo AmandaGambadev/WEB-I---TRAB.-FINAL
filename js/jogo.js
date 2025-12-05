@@ -31,7 +31,7 @@ $(document).ready(function () {
   let currentWordIndex = -1;
   let score = 0;
   let timerInterval = null;
-  let timeLeft = 12;
+  let timeLeft = 90;
   let wordTimeout = null;
 
   // imagens dos gatos (usando seletores corretos)
@@ -136,7 +136,7 @@ $(document).ready(function () {
     if (timerInterval) clearInterval(timerInterval);
 
     score = 0;
-    timeLeft = 12;
+    timeLeft = 90;
     $("#score-display").text(score);
     $("#time-display").text(timeLeft);
     gameInput.prop("disabled", false).val("").focus();
