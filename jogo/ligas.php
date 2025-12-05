@@ -18,14 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($league_name) && !empty($league_keyword)) {
             try {
-                $stmt = $pdo->prepare("INSERT INTO table_leagues (nome, palavra_chave, id_criador_liga) VALUES (?, ?, ?)");
-                $stmt->execute([$league_name, $league_keyword, $id_usuario]);
-                $new_league_id = $pdo->lastInsertId();
+                // Verificar se já existe uma liga com este nome
+                $stmt_check = $pdo->prepare("SELECT id_liga FROM table_leagues WHERE nome = ?");
+                $stmt_check->execute([$league_name]);
+                if ($stmt_check->fetch()) {
+                    $message = '<div class="alert alert-danger">Uma liga com este nome já existe.</div>';
+                } else {
+                    $stmt = $pdo->prepare("INSERT INTO table_leagues (nome, palavra_chave, id_criador_liga) VALUES (?, ?, ?)");
+                    $stmt->execute([$league_name, $league_keyword, $id_usuario]);
+                    $new_league_id = $pdo->lastInsertId();
 
-                $stmt = $pdo->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
-                $stmt->execute([$id_usuario, $new_league_id]);
+                    $stmt = $pdo->prepare("INSERT INTO table_league_members (id_usuario, id_liga) VALUES (?, ?)");
+                    $stmt->execute([$id_usuario, $new_league_id]);
 
-                $message = '<div class="alert alert-success">Liga "' . htmlspecialchars($league_name) . '" foi criada com sucesso.</div>';
+                    $message = '<div class="alert alert-success">Liga "' . htmlspecialchars($league_name) . '" foi criada com sucesso.</div>';
+                }
             } catch (PDOException $e) {
                 $message = '<div class="alert alert-danger">Erro ao criar liga.</div>';
             }
@@ -127,9 +134,12 @@ $all_leagues = $stmt_all->fetchAll();
           <li class="list-group-item">Você ainda não participa de nenhuma liga.</li>
         <?php else: ?>
           <?php foreach($my_leagues as $league): ?>
-            <li class="list-group-item">
-              <strong><?php echo htmlspecialchars($league['nome']); ?></strong>
-              <small class="text-muted">(Criada em: <?php echo date('d/m/y', strtotime($league['criada_em'])); ?>)</small>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><?php echo htmlspecialchars($league['nome']); ?></strong>
+                <small class="text-muted d-block">(Criada em: <?php echo date('d/m/y', strtotime($league['criada_em'])); ?>)</small>
+              </div>
+              <a href="pontos.php?scope=league&league_id=<?php echo $league['id_liga']; ?>&period=weekly" class="btn btn-sm btn-info">Ver Ranking</a>
             </li>
           <?php endforeach; ?>
         <?php endif; ?>

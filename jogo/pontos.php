@@ -6,7 +6,7 @@ check_user_logged_in();
 
 $scope = $_GET['scope'] ?? 'general';  //parâmetros ou valores padronizados
 $period = $_GET['period'] ?? 'weekly';
-$league_id = isset($_GET['id_liga']) ? (int)$_GET['id_liga'] : null;
+$league_id = isset($_GET['league_id']) ? (int)$_GET['league_id'] : null;
 
 $page_title = "Quadro de Pontos";  // título da página
 $page_title .= ($scope === 'general') ? " Geral" : " da Liga";
@@ -65,7 +65,7 @@ $my_leagues = $stmt_my_leagues->fetchAll();
         <strong>Ver Placar:</strong>
         <a href="pontos.php?scope=general&period=<?php echo $period; ?>" class="btn btn-<?php echo ($scope === 'general' ? 'primary' : 'outline-primary'); ?>">Geral</a>
         <select class="form-select d-inline-block w-auto" onchange="if(this.value) window.location.href=this.value;">
-          <option value="">Ver placar de uma liga</option>
+          <option value="" disabled selected>Ver placar de uma liga</option>
           <?php foreach($my_leagues as $league): ?>
             <option value="pontos.php?scope=league&league_id=<?php echo $league['id_liga']; ?>&period=<?php echo $period; ?>" <?php echo ($league_id === $league['id_liga'] ? 'selected' : ''); ?>>
               <?php echo htmlspecialchars($league['nome']); ?>
