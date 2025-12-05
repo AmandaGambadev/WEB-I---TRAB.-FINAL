@@ -184,11 +184,12 @@ $(document).ready(function () {
       url: "/WEB-I---TRAB.-FINAL/banco-de-dados/salvar_jogo.php",
       type: "POST",
       dataType: "json",
-      data: {
+      contentType: "application/json",
+      data: JSON.stringify({
         pontos: finalScore,
         palavras_minuto: wpm,
         ortografia: accuracy,
-      },
+      }),
     })
       .done(function (response) {
         if (response && response.success) {
