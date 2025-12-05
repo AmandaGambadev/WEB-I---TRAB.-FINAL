@@ -38,8 +38,8 @@
 
    // para entrar em uma liga
    case 'join':
-   $league_id = $_POST['id_liga'] ?? 0;
-   $keyword_attempt = $_POST['keyword_attempt'] ?? '';
+   $league_id = (int)($_POST['id_liga'] ?? 0);
+   $keyword_attempt = trim($_POST['keyword_attempt'] ?? '');
 
    // busca da palavra-chave referente à liga
    $stmt_check = $pdo->prepare("SELECT palavra_chave FROM table_leagues WHERE id_liga = ?");

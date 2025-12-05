@@ -6,7 +6,7 @@ check_user_logged_in();
 
 $scope = $_GET['scope'] ?? 'general';  //parâmetros ou valores padronizados
 $period = $_GET['period'] ?? 'weekly';
-$league_id = isset($_GET['league_id']) ? (int)$_GET['league_id'] : null;
+$league_id = isset($_GET['league_id']) ? (int)$_GET['league_id'] : 0;
 
 $page_title = "Quadro de Pontos";  // título da página
 $page_title .= ($scope === 'general') ? " Geral" : " da Liga";
@@ -16,7 +16,7 @@ $sql = "SELECT u.id_usuario, u.user_usuario, SUM(g.pontos) as total_score FROM t
 $params = [];
 
 if ($scope === 'league') {
-  if(!$league_id) {
+  if ($league_id <= 0) {
     die("Erro! O ID da Liga não foi informado.");
   }
   $sql .= " JOIN table_league_members lm ON u.id_usuario = lm.id_usuario WHERE lm.id_liga = ?";

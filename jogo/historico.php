@@ -24,7 +24,7 @@ $matches = $stmt->fetchAll();
     <h1>Histórico de Voluntariado</h1>
     <a href="inicio.php" class="btn btn-secondary mb-3">Voltar ao Painel</a>
     
-    <div class="card"
+    <div class="card">
          <div class="card-body">
              <table class="table table-striped table-hover">
                  <thead class="table-dark">
